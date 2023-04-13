@@ -10,7 +10,13 @@ public class Fuel extends Product{
     }
 
     public double sellingProduct(double pricePreLitre,double litre,double freePreLitre){
-         super.updateCurrentSales(pricePreLitre*litre,litre+((int)(litre/freePreLitre)));
+        if (litre<MIN_LITRE){
+            litre=MIN_LITRE;
+        }
+        if (litre>MAX_LITRE){
+            litre=MAX_LITRE;
+        }
+        super.updateCurrentSales(pricePreLitre*litre,litre+((int)(litre/freePreLitre)));
          return pricePreLitre*litre;
     }
     @Override

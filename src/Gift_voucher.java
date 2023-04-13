@@ -14,7 +14,12 @@ public class Gift_voucher extends Product{
 
     @Override
     public double suggestedPrice(){
-        return getCost()*PROFIT_MARGIN;
+        if (getCost()*PROFIT_MARGIN<MIN_SUGGESTED_PRICE){
+            return MIN_SUGGESTED_PRICE;
+        }
+        else{
+            return getCost()*PROFIT_MARGIN;
+        }
     }
 
     @Override
