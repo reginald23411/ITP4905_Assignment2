@@ -21,10 +21,21 @@ public class TestGasStationSystem {
         String productName;
         int ProductType;
         Scanner scannerNL = new Scanner(System.in);
-        System.out.println("Please Indicate the Type of Product You Want to Create:");
-        System.out.println("1 - Fuel");
-        System.out.println("2 - Gift Voucher");
-        ProductType=Integer.parseInt(scannerNL.nextLine());
+        do {
+            try {
+                System.out.println("Please Indicate the Type of Product You Want to Create:");
+                System.out.println("1 - Fuel");
+                System.out.println("2 - Gift Voucher");
+                ProductType=Integer.parseInt(scannerNL.nextLine());
+                if (ProductType>2||ProductType<1){
+                    System.out.println("Please input appropriate number");
+                    continue;
+                }
+                break;
+            }catch (NumberFormatException e){
+                System.out.println("Please input appropriate number and symbol and characters is prohibited");
+            }
+        }while (true);
         if (ProductType==1){
             boolean FlagForName=false;
             do {
@@ -64,9 +75,12 @@ public class TestGasStationSystem {
                 try {
                     System.out.println("Enter the Value of the new gift voucher:");
                     //when input the non-numeric characters,the input buffer will not be clear while using nextInt
-                    productCost= Double.parseDouble(this.scanner.next());
-                    if (productCost>0){
+                    productCost= Double.parseDouble(this.scanner.nextLine());
+                    if (productCost>=Gift_voucher.MIN_SUGGESTED_PRICE){
                         break;
+                    }else{
+                        System.out.printf("The gift voucher should be higher than %.1f or equals to %.1f",Gift_voucher.MIN_SUGGESTED_PRICE,Gift_voucher.MIN_SUGGESTED_PRICE);
+                        System.out.println();
                     }
                 }catch (NumberFormatException e){
                     System.out.println("Please input an Integer");
@@ -107,18 +121,51 @@ public class TestGasStationSystem {
                     System.out.print("\t"+product[i].getTotalSales());
                     System.out.println();
                 }
-
-                System.out.printf("Please Input the Fuel Type of Your Current Sales (1 - %d, 0 to previous menu):\n",Product.totalProducts);
-                sellOperation=Integer.parseInt(scanner.next());
+                do {
+                    try {
+                        System.out.printf("Please Input the Fuel Type of Your Current Sales (1 - %d, 0 to previous menu):\n",Product.totalProducts);
+                        sellOperation=Integer.parseInt(scanner.next());
+                        if (sellOperation<0||sellOperation>Product.totalProducts){
+                            System.out.printf("Invalid Choice. It should be a from 1 to %d",Product.totalProducts);
+                            System.out.println();
+                            continue;
+                        }
+                        break;
+                    }catch (NumberFormatException e){
+                        System.out.println("Please input an Integer");
+                    }
+                }while (true);
                 if (sellOperation==0){
                     break;
                 }
-                System.out.println("The Selling Suggested Price ("+product[sellOperation-1].getName()+") is "+product[sellOperation-1].suggestedPrice());
-                System.out.println("Please Input the Price You Want to Sell:");
-                sellPrice=Double.parseDouble(scanner.next());
+                do {
+                    try {
+                        System.out.println("The Selling Suggested Price ("+product[sellOperation-1].getName()+") is "+product[sellOperation-1].suggestedPrice());
+                        System.out.println("Please Input the Price You Want to Sell:");
+                        sellPrice=Double.parseDouble(scanner.next());
+                        if (product[sellOperation-1].suggestedPrice()>sellPrice){
+                            System.out.println("Invalid Price.");
+                            continue;
+                        }
+                        break;
+                    }catch (NumberFormatException e){
+                        System.out.println("Please input an Integer");
+                    }
+                }while (true);
                 if (product[sellOperation-1] instanceof Gift_voucher){
-                    System.out.println("Please Input the quantity of "+product[sellOperation-1].getName()+" You Want to Sell:");
-                    sellQuality=Integer.parseInt(scanner.next());
+                    do {
+                        try {
+                            System.out.println("Please Input the quantity of "+product[sellOperation-1].getName()+" You Want to Sell:");
+                            sellQuality=Integer.parseInt(scanner.next());
+                            if (sellQuality<1){
+                                System.out.println("Invalid Quantity.Quality of sell must higher than 1");
+                                continue;
+                            }
+                            break;
+                        }catch (NumberFormatException e){
+                            System.out.println("Invalid Quantity.");
+                        }
+                    }while (true);
                     System.out.println("The Total Sales amount for Gift Voucher ("+product[sellOperation-1].getName()+") is $"+ ((Gift_voucher) product[sellOperation - 1]).sellingProduct(sellQuality,sellPrice));
                 }
                 if (product[sellOperation-1] instanceof Fuel){
