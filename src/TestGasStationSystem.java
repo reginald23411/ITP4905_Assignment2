@@ -170,10 +170,35 @@ public class TestGasStationSystem {
                 }
                 if (product[sellOperation-1] instanceof Fuel){
                     double freePreLitre;
-                    System.out.println("Please Input the Litre of "+product[sellOperation-1].getName()+" You Want to Sell:");
-                    sellQuality=Integer.parseInt(scanner.next());
-                    System.out.println("Please Input the Discount of "+product[sellOperation-1].getName()+" Per Litre:");
-                    freePreLitre=Double.parseDouble(scanner.next());
+                    do{
+                        try {
+                            System.out.println("Please Input the Litre of "+product[sellOperation-1].getName()+" You Want to Sell:");
+                            sellQuality=Integer.parseInt(scanner.next());
+                            if (sellQuality>Fuel.MAX_LITRE){
+                                System.out.printf("As the input litre is larger than maximum litre which is  %.2f,the system will change it to the maximum by default.",Fuel.MAX_LITRE);
+                            }
+                            if (sellQuality<Fuel.MIN_LITRE){
+                                System.out.printf("As the input litre is larger than minimum litre which is  %.2f,the system will change it to the minimum by default.",Fuel.MIN_LITRE);
+                                System.out.println();
+                            }
+                            break;
+                        }catch (NumberFormatException e){
+                            System.out.println("Invalid litre");
+                        }
+                    }while (true);
+                    do {
+                        try {
+                            System.out.println("Please Input the Discount of "+product[sellOperation-1].getName()+" Per Litre:");
+                            freePreLitre=Double.parseDouble(scanner.next());
+                            if (freePreLitre<1){
+                                System.out.println("Please input the discount more than or equals to 1");
+                                continue;
+                            }
+                            break;
+                        }catch (NumberFormatException e){
+                            System.out.println("Invalid discount");
+                        }
+                    }while (true);
                     System.out.println("The Total Sales amount for Fuel ("+product[sellOperation-1].getName()+") is $"+((Fuel) product[sellOperation-1]).sellingProduct(sellPrice,sellQuality,freePreLitre));
                     System.out.printf("Price at %.1f and buy %.1f gets 1 free.",sellPrice,freePreLitre);
                     System.out.println();
