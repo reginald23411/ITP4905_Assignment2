@@ -4,11 +4,12 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 
 public class TestGasStationSystem {
-
+    //initialize constant object for globally use
     public static final int MAX_PRODUCT_TYPE_ITEM = 8;
     private Product[] product=new Product[MAX_PRODUCT_TYPE_ITEM];
     public boolean isValidChoice=true;
     Scanner scanner=new Scanner(System.in);
+    //
     public TestGasStationSystem(Product[] productTypes) {
         product=productTypes;
     }
@@ -97,29 +98,24 @@ public class TestGasStationSystem {
         int sellOperation=0;
         double sellPrice;
         int sellQuality;
+        String costString;
         if (Product.totalProducts==0){
             System.out.println("There are no product selling in this system.");
             System.out.println("Please Create New Product First.");
         }else{
             //show the product details
             do {
-                System.out.println("Product Sales:");
-                System.out.println("No. Name | Category | Cost | Suggested | Sold | Sales");
-                System.out.println("\t\t | \t\t    | \t   | Price\t   | Qty  | \t\t");
+                System.out.printf("%-3s %-9s %-6s %-13s %-6s %-6s %-6s %n","No."," Name     ","| Category |","   Cost    |","Suggested Price|","Sold Qty |","Sales");
                 for (int i = 0; i < Product.totalProducts; i++) {
-                    System.out.print(i+1+" ");
-                    System.out.print(product[i].getName());
                     if (product[i] instanceof Gift_voucher){
-                        System.out.print("\t"+"G.V");
-                        System.out.print("\t"+product[i].getCost());
+                        System.out.printf("%-4d %-14s",i+1,product[i].getName());
+                        System.out.printf("%-8s %-20.1f","G.V",product[i].getCost());
                     }else{
-                        System.out.print("\t"+"Fuel");
-                        System.out.print("\t"+product[i].getCost()+" Per litre");
+                        System.out.printf("%-4d %-14s",i+1,product[i].getName());
+                        costString=Double.toString(product[i].getCost())+" Per litre";
+                        System.out.printf("%-8s %-20s","Fuel",costString);
                     }
-                    System.out.print("\t"+product[i].suggestedPrice());
-                    System.out.print("\t"+product[i].getSoldLitre());
-                    System.out.print("\t"+product[i].getTotalSales());
-                    System.out.println();
+                    System.out.printf("%-14.1f %-7d %-6.1f %n",product[i].suggestedPrice(),product[i].getSoldLitre(),product[i].getTotalSales());
                 }
                 do {
                     try {
@@ -158,7 +154,7 @@ public class TestGasStationSystem {
                             System.out.println("Please Input the quantity of "+product[sellOperation-1].getName()+" You Want to Sell:");
                             sellQuality=Integer.parseInt(scanner.next());
                             if (sellQuality<1){
-                                System.out.println("Invalid Quantity.Quality of sell must higher than 1");
+                                System.out.println("Invalid Quantity.Quality of sell must higher than or equals to 1");
                                 continue;
                             }
                             break;
@@ -229,39 +225,41 @@ public class TestGasStationSystem {
     }
 
     public void start() {
-        try {
             while (true) {
-                System.out.println("\nWelcome to Product Station System.");
-                System.out.println("1. : Create New Product");
-                System.out.println("2. : Display or Selling Product");
-                System.out.println("3. : Show Product Shop Statistics");
-                System.out.println("4. : Exit");
-                int choice;
-                Scanner sc = new Scanner(System.in);
-                do {
-                    System.out.println("Please input your choice. (1 - 4):");
-                    choice = sc.nextInt();
-                    if (choice>4||choice<1){
-                        System.out.println("Please input the valid number from 1 to 4");
-                        System.out.println();
-                        isValidChoice=false;
-                    }
-                } while (!isValidChoice);
+                try {
+                    System.out.println("\nWelcome to Product Station System.");
+                    System.out.println("1. : Create New Product");
+                    System.out.println("2. : Display or Selling Product");
+                    System.out.println("3. : Show Product Shop Statistics");
+                    System.out.println("4. : Exit");
+                    int choice;
+                    Scanner sc = new Scanner(System.in);
+                    do {
+                        System.out.println("Please input your choice. (1 - 4):");
+                        choice = sc.nextInt();
+                        if (choice>4||choice<1){
+                            System.out.println("Please input the valid number from 1 to 4");
+                            System.out.println();
+                            isValidChoice=false;
+                        }else{
+                            break;
+                        }
+                    } while (!isValidChoice);
 
-                if (choice == 1) {
-                    this.inputCreateNewProductType();
-                } else if (choice == 2) {
-                    this.inputDisplaySelling();
-                } else if (choice == 3) {
-                    this.displayShopStatistics();
-                } else {
-                    System.exit(0);
+                    if (choice == 1) {
+                        this.inputCreateNewProductType();
+                    } else if (choice == 2) {
+                        this.inputDisplaySelling();
+                    } else if (choice == 3) {
+                        this.displayShopStatistics();
+                    } else {
+                        System.exit(0);
+                    }
+                }catch (InputMismatchException e){
+                    System.out.println("Please input the valid number,no characters or symbols");
                 }
             }
-        }catch (InputMismatchException e){
-            System.out.println("Please input the valid number,no characters or symbols");
         }
-    }
 
     public static void main(String args[]) {
         new TestGasStationSystem(new Product[MAX_PRODUCT_TYPE_ITEM]).
