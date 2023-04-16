@@ -14,6 +14,7 @@ public class Gift_voucher extends Product{
 
     @Override
     public double suggestedPrice(){
+        //As the value should not be under the minimum suggested price,we should change it when the value is under minimum suggested price
         if (getCost()*PROFIT_MARGIN<MIN_SUGGESTED_PRICE){
             return MIN_SUGGESTED_PRICE;
         }
