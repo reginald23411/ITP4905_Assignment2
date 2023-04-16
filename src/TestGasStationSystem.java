@@ -82,11 +82,26 @@ public class TestGasStationSystem {
                     "The suggested price is "+product[Product.totalProducts-1].suggestedPrice()+" per litre.");
 
         }if (ProductType==2){
+            boolean flagForCost=false;
             do {
                 try {
                     System.out.println("Enter the Value of the new gift voucher:");
                     //when input the non-numeric characters,the input buffer will not be clear while using nextInt
                     productCost= Double.parseDouble(this.scanner.nextLine());
+                    //validate if there are same name of product
+                    for (int i = 0; i < Product.totalProducts; i++) {
+                        if (product[i] instanceof Gift_voucher){
+                            if (productCost==Double.parseDouble(product[i].getName())){
+                                System.out.println("The name is already exist.");
+                                flagForCost=true;
+                                break;
+                            }
+                        }
+                    }
+                    //if the flagForCost is true,continue the looping
+                    if (flagForCost==true){
+                        continue;
+                    }
                     //when the user input correct value,end the looping.Otherwise,prompt the error message and continue the loop.
                     if (productCost>=Gift_voucher.MIN_SUGGESTED_PRICE){
                         break;
