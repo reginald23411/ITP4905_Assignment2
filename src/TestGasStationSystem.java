@@ -218,9 +218,10 @@ public class TestGasStationSystem {
                             //prompt error message when user input invalid Quantity
                             if (sellQuality>Fuel.MAX_LITRE){
                                 System.out.printf("As the input litre is larger than maximum litre which is  %.2f,the system will change it to the maximum by default.",Fuel.MAX_LITRE);
+                                System.out.println();
                             }
                             if (sellQuality<Fuel.MIN_LITRE){
-                                System.out.printf("As the input litre is larger than minimum litre which is  %.2f,the system will change it to the minimum by default.",Fuel.MIN_LITRE);
+                                System.out.printf("As the input litre is smaller than minimum litre which is  %.2f,the system will change it to the minimum by default.",Fuel.MIN_LITRE);
                                 System.out.println();
                             }
                             break;
