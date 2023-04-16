@@ -96,6 +96,9 @@ public class TestGasStationSystem {
                                 flagForCost=true;
                                 break;
                             }
+                            else{
+                                flagForCost=false;
+                            }
                         }
                     }
                     //if the flagForCost is true,continue the looping
